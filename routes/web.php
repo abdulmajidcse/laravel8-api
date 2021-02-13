@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TestApi\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix('test-api')->name('test-api')->group(function() {
+    Route::resource('users', UserController::class);
 });
