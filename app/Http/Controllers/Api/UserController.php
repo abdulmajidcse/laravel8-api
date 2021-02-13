@@ -90,50 +90,50 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'name'     => 'required|string',
-        //     'email'    => 'required|email|unique:users,email,'.$id,
-        //     'photo'    => 'nullable|mimes:jpg,jpeg,png',
-        //     'password' => 'nullable|min:8|confirmed',
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|string',
+            'email'    => 'required|email|unique:users,email,'.$id,
+            'photo'    => 'nullable|mimes:jpg,jpeg,png',
+            'password' => 'nullable|min:8|confirmed',
+        ]);
 
-        // if ($validator->fails()) {
-        //     return response()->json(['error' => $validator->messages()]);
-        // }
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()]);
+        }
 
-        // $user = User::find($id);
-        // if(!$user) {
-        //     return response()->json(['error' => 'User not found', 'sttus' => 404], 404);
-        // }
+        $user = User::find($id);
+        if(!$user) {
+            return response()->json(['error' => 'User not found', 'sttus' => 404], 404);
+        }
 
-        // $user->name = $request->name;
-        // $user->email = $request->email;
-        // if($request->password) {
-        //     $user->password = Hash::make($request->password);
-        // }
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if($request->password) {
+            $user->password = Hash::make($request->password);
+        }
 
-        // // photo upload and store name in users table
-        // if($request->file('photo')) {
-        //     $file = $request->file('photo');
-        //     $file_name = uniqid() . time();
-        //     $ext = strtolower($file->getClientOriginalExtension());
-        //     $file_full_name = $file_name . "." . $ext;
-        //     $upload_path = "assets/uploads/";
-        //     //upload file
-        //     $file->move($upload_path, $file_full_name);
+        // photo upload and store name in users table
+        if($request->file('photo')) {
+            $file = $request->file('photo');
+            $file_name = uniqid() . time();
+            $ext = strtolower($file->getClientOriginalExtension());
+            $file_full_name = $file_name . "." . $ext;
+            $upload_path = "assets/uploads/";
+            //upload file
+            $file->move($upload_path, $file_full_name);
 
-        //     //delete photo
-        //     if($user->photo && file_exists('assets/uploads/'.$user->photo)) {
-        //         unlink('assets/uploads/'.$user->photo);
-        //     }
+            //delete photo
+            if($user->photo && file_exists('assets/uploads/'.$user->photo)) {
+                unlink('assets/uploads/'.$user->photo);
+            }
 
-        //     // save name in table
-        //     $user->photo = $file_full_name;
-        // }
+            // save name in table
+            $user->photo = $file_full_name;
+        }
 
-        // $user->save();
+        $user->save();
 
-        // return response()->json(['success' => 'User saved', 'sttus' => 201], 201);
+        return response()->json(['success' => 'User saved', 'sttus' => 201], 201);
     }
 
     /**
