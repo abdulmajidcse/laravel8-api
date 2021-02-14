@@ -18,10 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::latest('id')->get();
-        if($users->count() > 0) {
-            return response()->json($users, 200);
-        }
-        return response()->json(['error' => 'User not found', 'sttus' => 404], 404);
+        return response()->json($users, 200);
     }
 
     /**
